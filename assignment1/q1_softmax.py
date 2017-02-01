@@ -22,18 +22,19 @@ def softmax(x):
     """
 
     # YOUR CODE HERE
+    # Optimization using c = -max_i (x)_i
 
-    if len(x.shape) == 1:
-        x -= np.max(x)
-        x = np.exp(x)
-        sumofx = np.sum(x)
-        x /= sumofx
+    if len(x.shape) == 1: # vector case 
+        exp_x = np.subtract(x, np.max(x))
+        exp_x = np.exp(exp_x)
+        sum_x = np.sum(exp_x)
+        x = np.divide(exp_x, sum_x)
     else:
         c = np.max(x, axis = 1) # softmax for each row
-        x -= c.reshape((x.shape[0], 1))
+        x = np.subtract(x, c.reshape((x.shape[0], 1))) # convert to column and subtract
         x = np.exp(x)
-        sumofx = np.sum(x, axis = 1)
-        x /= sumofx.reshape((x.shape[0], 1))
+        sum_x = np.sum(x, axis = 1)
+        x = np.divide(x, sum_x.reshape((x.shape[0], 1)))
 
     # END YOUR CODE
 
